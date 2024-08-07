@@ -63,6 +63,10 @@ INSERT INTO flipkart VALUES
  ("lipbam",03,100);
  SELECT * FROM flipkart;
  
+ 
+ 
+ 
+ 
 
 
 
