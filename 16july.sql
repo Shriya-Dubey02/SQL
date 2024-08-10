@@ -503,7 +503,7 @@ SELECT CONCAT(LOWER(substr(ename,LENGTH(ename),1))) FROM employee;
 -- 30 JULY
 -- NUMERIC FUNCTIONS
 SELECT mod(71,3);
-SELECT round(5.785,2);
+SELECT round(5.786,2);
 -- CEIL SELECTS THE UPPER VALUE
 SELECT CEIL(7.50);
 -- FLOOR REMOVES THE DECIMAL values
@@ -807,6 +807,7 @@ DESC department;
 SELECT * FROM department WHERE d_id= (SELECT department FROM employee WHERE age=
 (SELECT department FROM employee WHERE age<(SELECT max(age) FROM employee)ORDER BY AGE DESC LIMIT 1));
 
+<<<<<<< HEAD
 -- ----7 AUGUST-------------------
 -- VIEW IS A VIRTUAL TABLE
 USE shriya;
@@ -825,3 +826,86 @@ SELECT e_id,ename,city,department,age,email FROM employee;
 -- COMPLEX VIEW : QUERIES MORE THAN ONE TABLE
 
 DROP VIEW department_sal;
+
+
+-- 9 AUGUST--------------------
+
+-- 09 08 2024
+  -- stored procedure
+  -- in out 
+  -- whay DELIMITER IS USE
+  -- TO CHANGE END
+  use shriya;
+  Delimiter $$
+  select * from employee$$
+  select * from department$$
+  /*
+  DELIMITER $$
+CREATE PROCEDURE procedure_name()
+  
+  BEGIN
+  
+
+  
+  END$$
+  DELIMITER;
+  */
+
+DELIMITER $$
+CREATE procedure getEmployee()
+BEGIN
+
+select * from employee;
+
+END$$
+DELIMITER ;
+
+Call getEmployee();
+
+DELIMITER $$
+CREATE procedure getdepartment()
+BEGIN
+
+SELECT * FROM department;
+
+END$$
+DELIMITER ;
+call getdepartment;      
+
+
+
+DELIMITER $$
+CREATE procedure get_by_city(IN city VARCHAR(100))
+begin
+
+SELECT COUNT(*) FROM EMPLOYEE WHERE EMPLOYEE.CITY=CITY;
+
+
+END$$
+DELIMITER ;
+CALL GET_BY_CITY("PUNE");
+-- drop procedure procedure_name;
+
+DELIMITER $$
+create procedure get_by_department (in dep_count int(10) )
+begin 
+
+
+ select count(*) from employee  where department=dep_count;
+ 
+ end$$
+ delimiter ;
+ 
+ call get_by_department(1) ;
+ 
+ DELIMITER $$
+ CREATE PROCEDURE UPDATE_PHONENO(IN EM_ID INt(20), IN  phoneno bigint)
+ 
+bEGIN
+UPDATE employee set employee.phoneno=phoneno where employee.em_id=em_id;
+
+END$$
+delimiter ;
+CALL UPDATE_PHONENO(1,90225525);
+DROP procedure UPDATE_PHONENO;
+SELECT * from EMPLOYEE;
