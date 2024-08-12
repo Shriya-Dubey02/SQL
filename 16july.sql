@@ -697,17 +697,17 @@ SELECT * FROM department;
 select coalesce(null,"amit",null,null);
 
 -- INNER JOIN
-
+SELECT * FROM DEPARTMENT;
 
 SELECT e.ename,d.d_id,d.department FROM employee  e
 INNER JOIN department d
 ON
 e.department=d.d_id;
-
-SELECT employee ename,department d_id,department FROM employee  
-INNER JOIN department 
+SELECT * FROM employee e;
+SELECT e.ename,d.d_id,e.department FROM employee e
+INNER JOIN department d
 ON
-employee d_id=department d_id;
+e.department =d.d_id;
 
 -- LEFT JOIN
 
@@ -807,7 +807,7 @@ DESC department;
 SELECT * FROM department WHERE d_id= (SELECT department FROM employee WHERE age=
 (SELECT department FROM employee WHERE age<(SELECT max(age) FROM employee)ORDER BY AGE DESC LIMIT 1));
 
-<<<<<<< HEAD
+
 -- ----7 AUGUST-------------------
 -- VIEW IS A VIRTUAL TABLE
 USE shriya;
@@ -902,10 +902,66 @@ begin
  CREATE PROCEDURE UPDATE_PHONENO(IN EM_ID INt(20), IN  phoneno bigint)
  
 bEGIN
-UPDATE employee set employee.phoneno=phoneno where employee.em_id=em_id;
+UPDATE employee set employee.phoneno=phoneno where employee.e_id=e_id;
 
 END$$
 delimiter ;
 CALL UPDATE_PHONENO(1,90225525);
 DROP procedure UPDATE_PHONENO;
 SELECT * from EMPLOYEE;
+
+-- ----------- 12 AUGUST -----------------------
+USE shriya;
+SELECT * FROM employee;
+SET @age= 25;
+SELECT * FROM employee WHERE age<@age;
+
+DELIMITER $$
+CREATE PROCEDURE getYear(IN e_id CHAR(4),OUT reg_year INT)
+BEGIN 
+SELECT YEAR(joining_date) INTO reg_year FROM employee WHERE employee.e_id= e_id;
+END $$
+DELIMITER ;
+
+
+DROP PROCEDURE getYear;
+
+DELIMITER $$
+CREATE PROCEDURE getYear(IN e_id INT ,OUT reg_year INT)
+BEGIN 
+SELECT YEAR(joining_date) INTO reg_year FROM employee WHERE employee.e_id= e_id;
+END $$
+DELIMITER ;
+CALL getYear(1115,@reg_year);
+SELECT @reg_year;
+
+SELECT * FROM employee;
+-- ONLY VALID FOR MONTH,YEAR AND DATE
+SELECT MONTH(joining_date) INTO reg_month FROM employee WHERE employee.e_id = e.id;
+-- ---------------
+DROP PROCEDURE get_month;
+DELIMITER $$
+CREATE PROCEDURE get_month(IN e_id INT, OUT reg_month INT)
+BEGIN
+SELECT MONTH(joining_date) INTO reg_month FROM employee WHERE employee.e_id = e_id;
+END $$
+DELIMITER ;
+CALL get_month(1111,@reg_month);
+SELECT @reg_month;
+DROP PROCEDURE get_city;
+DELIMITER $$ 
+CREATE PROCEDURE get_city(IN e_id INT, OUT city_res CHAR(20))
+BEGIN
+SELECT city INTO city_res FROM employee WHERE employee.e_id= e_id;
+END $$
+
+DELIMITER ;
+CALL get_city(1113,@city_res);
+SELECT @city_res;
+SELECT * FROM employee;
+
+-- getcount("Mumbai",@countemp)
+-- getempdetail("d2")
+-- getemployee("a")
+-- getemployeecount("a",@countemp)
+
