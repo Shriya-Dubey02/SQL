@@ -954,14 +954,125 @@ CREATE PROCEDURE get_city(IN e_id INT, OUT city_res CHAR(20))
 BEGIN
 SELECT city INTO city_res FROM employee WHERE employee.e_id= e_id;
 END $$
+ 
 
 DELIMITER ;
 CALL get_city(1113,@city_res);
 SELECT @city_res;
+SELECT * FROM employee WHERE department='D2';
+
+USE shriya;
+DELIMITER $$
+ALTER PROCEDURE mum_city(IN e_id INT,OUT mum_res CHAR(20))
+BEGIN
+-- SELECT count(city) INTO mum_res FROM employee WHERE city= "Bangalore" OR employee.e_id = e_id;
+SELECT count(city) INTO mum_res FROM employee WHERE city=@mum_res OR employee.e_id =@e_id;
+END $$
+DELIMITER ;
+DROP PROCEDURE mum_city;
+CALL mum_city("Bangalore", @mum_res); -- @mum_res
+SELECT @mum_res;
+SELECT @e_id;
 SELECT * FROM employee;
+
+USE shriya;
+SELECT * FROM employee;
+SELECT * FROM department;
+DELIMITER $$
+alter PROCEDURE get_empl_det(IN e_id INT,OUT dep_emp VARCHAR(5),out namee varchar(10))
+BEGIN 
+SELECT department INTO dep_emp FROM employee WHERE employee.e_id= e_id;-- city,salary,
+SELECT ename INTO namee FROM employee WHERE employee.e_id= e_id;-- city,salary,
+END $$
+DELIMITER ;
+CALL get_empl_det(1111,@dep_emp,@namee);
+SELECT @dep_emp,@namee
+
 
 -- getcount("Mumbai",@countemp)
 -- getempdetail("d2")
 -- getemployee("a")
 -- getemployeecount("a",@countemp)
+-- ans
+SELECT count(*) INTO countemp FROM employee WHERE ename LIKE CONCAT(ch,"a%");
+ 
 
+SELECT * FROM city;
+
+
+-- ---------14 AUGUST-------------------------
+use shriya;
+DELIMITER $$ 
+CREATE PROCEDURE updateSalary(IN e_id INT ,INOUT salary INT)
+BEGIN
+DECLARE old_salary INT;
+SELECT employee.salary INTO old_salary FROM employee WHERE employee.e_id=e_id;
+UPDATE employee SET employee.salary=salary WHERE employee.e_id=e_id;
+SET salary= old_salary;
+
+END $$
+DELIMITER ;
+SET @salary= 85000;
+CALL updateSalary(1111,@salary);
+SELECT @salary;
+SELECT * FROM employee;
+
+-- SYNTAX FOR FUNCTION PROCEDURES
+
+/* DELIMITER $$
+CREATE FUNCTION fun_name(p1,p2,....,pn)
+RETURNS datatype
+BEGIN
+// LOGIC
+
+RETURN value;
+END $$
+DELIMITER ;
+*/
+DELIMITER $$
+CREATE FUNCTION addition(a INT,b INT)
+RETURNS INT
+BEGIN
+    RETURN a+b;
+END $$
+DELIMITER ;
+SELECT addition(150,100);
+-- SUBSTRACTION
+DELIMITER $$
+CREATE FUNCTION substraction(a INT, b INT)
+RETURNS int
+BEGIN
+  RETURN a-b;
+END $$
+DELIMITER ;
+SELECT substraction(-200,100);
+
+-- TO MAKE THE FIRST LETTER CAPTITAL
+DELIMITER $$
+CREATE FUNCTION formatName(word VARCHAR(100))
+RETURNS VARCHAR(100)
+BEGIN
+  RETURN CONCAT(upper(substr(word,1,1)),lower(substr(word,2)));
+END $$
+DELIMITER ;
+SELECT formatName("NISHA");
+SELECT formatName(ename),formatName(city),addition(salary,10000) FROM employee;
+
+-- BY CASE
+DELIMITER $$
+CREATE FUNCTION grade(marks INT)
+RETURNS CHAR(20)
+BEGIN
+     DECLARE grade CHAR(20);
+     SET grade=CASE
+			   WHEN marks BETWEEN 0 AND 40 THEN "C"
+               WHEN marks BETWEEN 41 AND 74 THEN "B"
+               WHEN marks BETWEEN 75 AND 100 THEN "A"
+               ELSE 
+               "Invalid Marks"
+               END;
+       RETURN grade;
+      END $$
+      DELIMITER ;
+      
+      select grade(70);
