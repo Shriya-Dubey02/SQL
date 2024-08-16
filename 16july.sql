@@ -1076,3 +1076,97 @@ BEGIN
       DELIMITER ;
       
       select grade(70);
+      
+      
+-- --------------16 AUGUST-------------------
+/*
+Syntax:
+IF condition THEN
+  statements
+END IF;
+
+IF condition THEN
+  statement1
+ELSE
+  statement2
+END IF; 
+*/
+
+-- IF ELSE STATEMENTS
+USE shriya;
+DELIMITER $$
+CREATE FUNCTION checkNumber(n INT)
+RETURNS VARCHAR(4)
+BEGIN
+IF (n%2=0) THEN
+    RETURN "Even";
+  ELSE 
+	RETURN "Odd";
+   END IF; 
+
+END $$
+DELIMITER ;  
+SELECT checkNumber(60);
+
+DELIMITER $$
+CREATE FUNCTION checkAge(n INT)
+    RETURNS BOOL
+ BEGIN
+   IF (n>=18) THEN
+      RETURN TRUE;
+   ELSE 
+      RETURN FALSE;
+ END IF;
+ END $$
+DELIMITER ;
+SELECT checkAge(18);
+DROP FUNCTION checkAge;
+
+/* ELSE IF STATEMENTS
+IF condition THEN
+  statement 1
+ELSEIF condition THEN
+  statement 2
+ELSEIF condition THEN
+  statement 3
+  ELSE statement n
+END IF;  
+*/
+DELIMITER $$
+CREATE FUNCTION selectLanguage(choice INT)
+RETURNS VARCHAR(8)
+BEGIN
+   IF (choice=1) THEN
+     RETURN "English";
+   ELSEIF (choice=2) THEN
+     RETURN "Marathi";  
+      ELSEIF (choice=3) THEN
+     RETURN "Hindi";
+     ELSE 
+     RETURN "Invalid input";
+     END IF;
+END$$
+DELIMITER ;
+SELECT selectLanguage(2);
+
+DELIMITER $$
+CREATE FUNCTION selectDay(choice INT)
+RETURNS VARCHAR(10)
+BEGIN
+   IF (choice=1) THEN
+     RETURN "Monday";
+   ELSEIF (choice=2) THEN
+     RETURN "Tuesday";  
+      ELSEIF (choice=3) THEN
+     RETURN "Wednesday";
+     ELSE 
+     RETURN "not applicable";
+     END IF;
+END$$
+DELIMITER ;
+SELECT selectDay(2);
+
+
+
+   
+
