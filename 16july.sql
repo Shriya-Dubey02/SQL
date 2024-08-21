@@ -1166,6 +1166,61 @@ END$$
 DELIMITER ;
 SELECT selectDay(2);
 
+-- ----- CURSOR-----------------------
+-- ----21 AUGUST----------------------
+-- 1) Declare Cursor
+--   DECLARE cursor_name CURSOR FOR select query
+--   DECLARE s CURSOR FOR SELECT id FROM students;
+-- 2) OPEN Cursor
+--   OPEN cursor_name;
+--   OPEN s;
+-- 3) Fetch Cursor
+--  FETCH cursor_name INTO variable_list;
+--  FETCH s INTO student_id;
+-- 4) CLOSE Cursor
+--   CLOSE cursor_name;
+--   CLOSE s;
+
+use shriya;
+DESC employee;
+SELECT e_id,ename FROM employee;
+
+DELIMITER $$
+CREATE PROCEDURE cursor_eg()
+BEGIN
+   DECLARE em_id INT;
+   DECLARE em_name VARCHAR(100);
+   DECLARE n INT;
+   
+   DECLARE employee_cursor CURSOR FOR 
+   SELECT e_id,ename FROM employee;
+   
+   DECLARE CONTINUE HANDLER FOR 1329
+   BEGIN
+     SET n=1;
+   END;
+   OPEN employee_cursor;
+   
+   cursorLoop:LOOP
+   IF n=1 THEN 
+     LEAVE cursorLoop;
+     END IF;
+   FETCH employee_cursor INTO em_id,em_name;
+   SELECT em_id,em_name;
+   END LOOP cursorLoop;
+   SELECT "CODE after loop";
+   
+   SELECT "HELLO";
+   
+   SELECT em_id,em_name;
+   
+   CLOSE employee_cursor;
+END $$
+
+DELIMITER ;
+CALL cursor_eg;
+DROP PROCEDURE cursor_eg;
+
 
 
    
