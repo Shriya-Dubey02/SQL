@@ -86,3 +86,68 @@ INSERT INTO sales VALUES
 ("C","2021-02-07",3);
 
 -- https://8weeksqlchallenge.com/case-study-1/
+
+-- ----- 22 AUGUST--------------------
+SHOW TABLES;
+desc members;
+SELECT * FROM sales;
+desc menu;
+desc sales;
+SELECT m.product_name,s.customer_id  FROM menu m
+JOIN sales s
+USING(product_id);
+CREATE TABLE menu_sales_table(
+p_name VARCHAR(100),
+c_id VARCHAR(10)
+
+);
+-- 1
+DELIMITER $$
+CREATE PROCEDURE insert_values_with_cursor()
+BEGIN 
+-- 2
+   DECLARE pname VARCHAR(100);
+   DECLARE cname VARCHAR(20);
+   DECLARE n INT; 
+   -- 6
+   -- 3
+   DECLARE product_customer CURSOR FOR
+      SELECT m.product_name,s.customer_id  FROM menu m
+       JOIN sales s
+	   USING(product_id);
+     
+     DECLARE CONTINUE HANDLER FOR 1329
+     BEGIN 
+       SET n=1;
+      END; 
+     OPEN product_customer; -- 4
+     
+     product_customer_loop: LOOP
+       FETCH product_customer INTO pname,cname;
+       IF n=1 THEN -- 7
+        LEAVE product_customer_loop;
+       END IF;
+       INSERT INTO
+       dannydiner.menu_sales_table
+       VALUES(pname,cname);
+       END LOOP product_customer_loop;
+       
+     CLOSE product_customer; -- 5
+   
+
+
+END $$
+
+DELIMITER ;
+DROP PROCEDURE insert_values_with_cursor;
+CALL insert_values_with_cursor();
+SELECT * FROM menu_sales_table;
+
+
+
+CREATE TABLE sales_copy as SELECT * FROM sales;
+DESC sales_copy;
+SELECT * FROM sales_copy;
+
+
+

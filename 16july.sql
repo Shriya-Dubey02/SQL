@@ -1210,6 +1210,9 @@ BEGIN
    END LOOP cursorLoop;
    SELECT "CODE after loop";
    
+   
+
+   
    SELECT "HELLO";
    
    SELECT em_id,em_name;
@@ -1221,6 +1224,19 @@ DELIMITER ;
 CALL cursor_eg;
 DROP PROCEDURE cursor_eg;
 
+   -- --------22 AUGUST-----------------
+   use shriya;
+   show tables;
+   SELECT * FROM department;
+   SELECT * FROM employee;
+
+   
+   SELECT e.ename,d.d_id FROM employee e
+   JOIN department d
+   USING(department);
+   DESC department;
+   DESC employee;
+   
 
 
    
