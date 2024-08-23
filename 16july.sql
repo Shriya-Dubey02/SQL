@@ -378,7 +378,7 @@ DELETE FROM employee;
 -- 
 SELECT COUNT(*) AS number_of_employees FROM employee;
 SELECT COUNT(*) AS no_of_department FROM department;
-
+use shriya;
 SELECT DISTINCT city FROM employee;
 DESC employee;
 
@@ -398,6 +398,8 @@ SELECT * FROM employee ORDER BY salary DESC,age DESC;
  -- TO ARRANGE DATA 
 SELECT * FROM employee ORDER BY age ;
 SELECT * FROM employee ORDER BY ename;
+DELETE FROM employee WHERE e_id=1128 and e_id= 1118;
+SELECT * FROM employee;
 
 UPDATE employee SET salary=80000 WHERE e_id=1111;
 

@@ -149,5 +149,89 @@ CREATE TABLE sales_copy as SELECT * FROM sales;
 DESC sales_copy;
 SELECT * FROM sales_copy;
 
+-- -----------23 AUGUST---------------
+-- ----------TRIGGER-----------------
+
+-- INSERT     NEW
+-- UPDATE     OLD     NEW
+-- DELETE     OLD
+
+-- Syntax for trigger
+-- CREATE TRIGGER trigger_name
+-- (BEFORE|AFTER) (INSERT | UPDATE | DELETE)
+-- ON table_name FOR EACH ROW 
+/*BEGIN
+
+END*/
+
+use dannydiner;
+CREATE TABLE employee(
+name VARCHAR(100),
+working_hours INT,
+pay_per_hour INT,
+salary INT
+);
+
+DELIMITER $$
+CREATE TRIGGER before_insert_employee
+BEFORE INSERT
+ON employee FOR EACH ROW
+BEGIN
+  SET NEW.salary= NEW.working_hours*NEW.pay_per_hour;
+END $$
+DELIMITER ;
+SELECT * FROM employee;
+INSERT INTO employee (name,working_hours,pay_per_hour)
+VALUES
+("Manish",10,800);
+
+DELIMITER $$
+CREATE TRIGGER before_update_employee
+BEFORE UPDATE
+ON employee FOR EACH ROW
+BEGIN
+  SET NEW.salary= NEW.working_hours * NEW.pay_per_hour;
+END $$
+DELIMITER ;
+INSERT INTO employee (name,working_hours,pay_per_hour)
+VALUES
+("Nisha",8,1000);
+UPDATE employee SET working_hours=15 WHERE name= "Manish";
+SELECT * FROM employee;
+DELETE FROM employee WHERE name= "Manish";
+
+ALTER TABLE employee ADD COLUMN previous_pay INT;
+
+DELIMITER $$
+CREATE TRIGGER before_update_employee_pay_per_hour
+BEFORE UPDATE 
+ON employee FOR EACH ROW
+BEGIN 
+ SET NEW.previous_pay= OLD.pay_per_hour;
+END $$
+DELIMITER ;
+UPDATE employee SET pay_per_hour= 700 WHERE name= "Manish";
+SELECT * FROM employee;
+UPDATE employee SET pay_per_hour= 800 WHERE name= "Nisha";
+
+ALTER TABLE employee ADD COLUMN d_id VARCHAR(5);
+CREATE TABLE department(
+d_id VARCHAR(5),
+d_name VARCHAR(10)
+);
+DESC department;
+INSERT INTO department VALUES ("D1","IT"),("D2","Marketing");
+SELECT * FROM department;
+UPDATE employee SET d_id="D2" WHERE name="Nisha";
+SELECT * FROM employee;
 
 
+DELIMITER $$
+CREATE TRIGGER delete_department
+BEFORE DELETE
+ON department FOR EACH ROW
+BEGIN
+   UPDATE employee SET d_id= NULL WHERE d_id =OLD.d_id;  -- d_id is employee ka d_id column
+END $$
+DELIMITER ;
+DELETE FROM department where d_id="D2";
