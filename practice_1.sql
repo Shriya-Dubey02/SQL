@@ -87,6 +87,12 @@ INSERT INTO sales VALUES
 
 -- https://8weeksqlchallenge.com/case-study-1/
 
+use dannydiner;
+SELECT * FROM members;
+SELECT * FROM menu;
+SELECT * FROM sales;
+-- SELECT product_id,product_name FROM menu order by product_id;
+
 -- ----- 22 AUGUST--------------------
 SHOW TABLES;
 desc members;
@@ -235,3 +241,47 @@ BEGIN
 END $$
 DELIMITER ;
 DELETE FROM department where d_id="D2";
+
+-- ------------INDEXES --------------------
+-- INDEX is used for fast reterival of data
+
+-- CREATE INDEX index_name ON table-name(col-name);
+use dannydiner;
+DESC menu;
+SHOW INDEXES FROM menu;
+CREATE INDEX menu_product ON menu(product_name);
+
+DESC employee;
+CREATE INDEX name_empl ON employee(name);
+SHOW INDEXES FROM employee;
+-- MUL here is not a foreign key 
+SELECT * FROM employee;
+SELECT * FROM employee WHERE name= "Manish";
+
+CREATE INDEX did_empl ON employee(d_id);
+SHOW INDEXES FROM employee;
+
+-- TO DROP INDEX
+-- ALTER TABLE table-name DROP INDEX index_name;
+ALTER TABLE employee DROP INDEX did_empl;
+
+
+SELECT * FROM menu;
+SELECT * FROM members;
+SELECT * FROM sales;
+DELIMITER $$ 
+CREATE PROCEDURE get_by_sales(in cust_count int(10))
+BEGIN
+SELECT count(*) FROM sales WHERE product_id= 1;
+
+END $$
+DELIMITER ;
+DROP PROCEDURE get_by_sales;
+CALL get_by_sales(1);
+
+
+
+
+
+						
+
