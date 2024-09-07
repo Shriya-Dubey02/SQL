@@ -279,6 +279,16 @@ DELIMITER ;
 DROP PROCEDURE get_by_sales;
 CALL get_by_sales(1);
 
+USE dannydiner;
+SHOW TABLES;
+SELECT * FROM sales;
+SELECT * FROM menu;
+
+SELECT p.product_id,p.price ,s.product_id FROM menu p
+JOIN sales s
+ON 
+p.product_id=s.product_id GROUP BY sum(price);
+
 
 
 
