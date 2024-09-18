@@ -48,7 +48,27 @@ SELECT * FROM EmployeeView;
 INSERT INTO Employee VALUES
 (11,"Piyush","Bansal",52000,2,"Data Analyst");
 
-INSERT INTO EmployeeView VALUES 
+INSERT INTO EmployeeView (id,first_name,last_name,roles) VALUES
 (11,"Piyush","Bansal","Data Analyst");
 
 SELECT * FROM employee;
+
+DELETE FROM employee WHERE id=11 AND salary is NULL;
+UPDATE EmployeeView SET roles="IT_PROGRAMMER"
+WHERE roles="IT_PROG";
+DELETE  FROM EmployeeView 
+WHERE id=5 AND roles="TESTER";
+DELETE  FROM employee WHERE id=5;
+DELETE FROM employee WHERE ID=11;
+
+
+CREATE VIEW EmployeeDetails AS
+SELECT id,first_name,last_name, salary
+FROM employee
+WHERE salary>(SELECT AVG(salary) FROM employee);
+
+SELECT * FROM EmployeeDetails;
+SELECT * FROM department;
+CREATE VIEW EmployeeDet AS 
+SELECT id,first_name,last_name,salary,department.dept_name
+FROM employee WHERE salary>(SELECT AVG(salary) FROM employee);
